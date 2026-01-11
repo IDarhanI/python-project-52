@@ -1,13 +1,77 @@
-<!doctype html>
-<html lang="en">
+{% load i18n %}
+{% load django_bootstrap5 %}
+
+<!DOCTYPE html>
+<html lang="{{ request.LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Task Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Task Manager" %}</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <style>
+        .language-switcher {
+            max-width: 120px;
+        }
+    </style>
 </head>
 <body>
-<h1>Welcome to Task Manager</h1>
+    <!-- Навигация -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">{% trans "Task Manager" %}</a>
+
+            <!-- Переключатель языка -->
+            <form action="{% url 'set_language' %}" method="post" class="language-switcher">
+                {% csrf_token %}
+                <!-- ДОБАВЬТЕ ЭТУ СТРОКУ ↓ -->
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <select name="language" class="form-select form-select-sm" onchange="this.form.submit()">
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% for lang_code, lang_name in LANGUAGES %}
+                        <option value="{{ lang_code }}" {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>
+                            {{ lang_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login/">{% trans "Login" %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register/">{% trans "Register" %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users/">{% trans "Users" %}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="container mt-5">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">{% trans "Welcome to Task Manager" %}</h1>
+                <p class="col-md-8 fs-4">{% trans "A simple and effective task management system." %}</p>
+                <a class="btn btn-primary btn-lg" href="/login/">{% trans "Get Started" %}</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Футер -->
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted">© {% now "Y" %} {% trans "Task Manager. All rights reserved." %}</span>
+        </div>
+    </footer>
 </body>
 </html>
