@@ -1,5 +1,5 @@
 def main():
-    print("Hello from hexlet-code!")
+    print("Hello from python-project-52!")
 
 
 if __name__ == "__main__":

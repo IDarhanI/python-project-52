@@ -1,0 +1,35 @@
+{% extends 'task_manager_app/base.html' %}
+{% load i18n %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">{% trans "Users" %}</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>{% trans "Username" %}</th>
+                <th>{% trans "Full name" %}</th>
+                <th>{% trans "Created at" %}</th>
+                <th>{% trans "Actions" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.get_full_name }}</td>
+                <td>{{ user.created_at|date:"d.m.Y H:i" }}</td>
+                <td>
+                    <a href="{% url 'user_update' user.id %}" class="btn btn-primary btn-sm">{% trans "Edit" %}</a>
+                    <a href="{% url 'user_delete' user.id %}" class="btn btn-danger btn-sm">{% trans "Delete" %}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
