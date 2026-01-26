@@ -1,39 +1,41 @@
-"""
-Django settings for task_manager project.
-"""
-
 from pathlib import Path
 import os
-from dotenv import load_dotenv
-import dj_database_url
 
-# ------------------------------------------------------------------------------
+import dj_database_url
+from dotenv import load_dotenv
+
+# ---------------------------------------------------------------------
 # Base
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
 
-DEBUG = os.getenv("DEBUG", "False") == "True"
+# ---------------------------------------------------------------------
+# Security
+# ---------------------------------------------------------------------
 
-SECRET_KEY = os.getenv("SECRET_KEY", "unsafe-secret-key-for-dev")
+SECRET_KEY = os.getenv("SECRET_KEY", "unsafe-secret-key")
+
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "webserver",
+    "webserver",  # требуется по заданию
 ]
 
-if not DEBUG:
-    ALLOWED_HOSTS.append(".onrender.com")
+# Render автоматически прокидывает домен
+RENDER_EXTERNAL_HOSTNAME = os.getenv("RENDER_EXTERNAL_HOSTNAME")
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
 # Applications
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
 
 INSTALLED_APPS = [
-    "task_manager_app",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -42,11 +44,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_bootstrap5",
     "django_filters",
+    "task_manager_app",
 ]
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
 # Middleware
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -58,18 +61,24 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "task_manager_app.rollbar_middleware.CustomRollbarNotifierMiddleware",
 ]
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
 # URLs / WSGI
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
 
 ROOT_URLCONF = "task_manager.urls"
+
+WSGI_APPLICATION = "task_manager.wsgi.application"
+
+# ---------------------------------------------------------------------
+# Templates
+# ---------------------------------------------------------------------
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "task_manager_app" / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -82,22 +91,14 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "task_manager.wsgi.application"
-
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
 # Database
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DATABASE_URL:
-    DATABASES = {
-        "default": dj_database_url.config(
-            default=DATABASE_URL,
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
-    }
+    DATABASES = {"default": dj_database_url.parse(DATABASE_URL)}
 else:
     DATABASES = {
         "default": {
@@ -106,9 +107,9 @@ else:
         }
     }
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
 # Password validation
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -119,64 +120,45 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-# ------------------------------------------------------------------------------
-# I18N
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
+# Internationalization
+# ---------------------------------------------------------------------
 
 LANGUAGE_CODE = "en"
-
-TIME_ZONE = "UTC"
-
-USE_I18N = True
-USE_TZ = True
 
 LANGUAGES = [
     ("en", "English"),
     ("ru", "Russian"),
 ]
 
+TIME_ZONE = "UTC"
+
+USE_I18N = True
+USE_TZ = True
+
 LOCALE_PATHS = [
     BASE_DIR / "locale",
 ]
 
-# ------------------------------------------------------------------------------
-# Static
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
+# Static files
+# ---------------------------------------------------------------------
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATICFILES_STORAGE = (
-    "whitenoise.storage.CompressedManifestStaticFilesStorage"
-    if not DEBUG
-    else "django.contrib.staticfiles.storage.StaticFilesStorage"
-)
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
 # Auth redirects
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
 
-LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "index"
-LOGOUT_REDIRECT_URL = "index"
+LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
-# ------------------------------------------------------------------------------
-# Default PK
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
+# Default primary key
+# ---------------------------------------------------------------------
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# ------------------------------------------------------------------------------
-# Rollbar
-# ------------------------------------------------------------------------------
-
-ROLLBAR_ACCESS_TOKEN = os.getenv("ROLLBAR_ACCESS_TOKEN")
-
-if ROLLBAR_ACCESS_TOKEN and not DEBUG:
-    ROLLBAR = {
-        "access_token": ROLLBAR_ACCESS_TOKEN,
-        "environment": "production",
-        "root": BASE_DIR,
-    }
-else:
-    ROLLBAR = {}
