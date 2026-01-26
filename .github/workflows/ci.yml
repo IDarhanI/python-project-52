@@ -23,14 +23,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          source $HOME/.local/bin/env
-          uv sync
+          ~/.local/bin/uv sync
 
       - name: Run tests with coverage
         env:
           DJANGO_SETTINGS_MODULE: task_manager.settings
         run: |
-          uv run pytest --cov=. --cov-report=xml
+          ~/.local/bin/uv run pytest --cov=. --cov-report=xml
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
