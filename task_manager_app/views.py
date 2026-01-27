@@ -70,7 +70,7 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, "Пользователь успешно изменён")
+        messages.success(self.request, "Пользователь успешно изменен")
         return response
 
 
@@ -86,7 +86,7 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         try:
             response = super().post(request, *args, **kwargs)
-            messages.success(request, "Пользователь успешно удалён")
+            messages.success(request, "Пользователь успешно удален")
             return response
         except ProtectedError:
             messages.error(
@@ -128,7 +128,7 @@ class StatusUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, "Статус успешно изменён")
+        messages.success(self.request, "Статус успешно изменен")
         return response
 
 
@@ -141,7 +141,7 @@ class StatusDeleteView(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         try:
             response = super().post(request, *args, **kwargs)
-            messages.success(request, "Статус успешно удалён")
+            messages.success(request, "Статус успешно удален")
             return response
         except ProtectedError:
             messages.error(
@@ -217,7 +217,7 @@ class TaskDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return response
 
     def handle_no_permission(self):
-        messages.error(self.request, "Только автор задачи может её удалить")
+        messages.error(self.request, "Только автор задачи может ее удалить")
         return redirect("tasks_list")
 
 
