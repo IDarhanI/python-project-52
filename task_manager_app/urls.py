@@ -1,6 +1,4 @@
-from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
-
 from . import views
 
 urlpatterns = [
@@ -10,9 +8,9 @@ urlpatterns = [
     path("users/create/", views.UserCreateView.as_view(), name="user_create"),
     path("users/<int:pk>/update/", views.UserUpdateView.as_view(), name="user_update"),
     path("users/<int:pk>/delete/", views.UserDeleteView.as_view(), name="user_delete"),
-    # Auth — ВАЖНО: без template_name
-    path("login/", LoginView.as_view(), name="login"),
-    path("logout/", LogoutView.as_view(), name="logout"),
+    # Auth — ВАЖНО: используем СВОИ views
+    path("login/", views.LoginView.as_view(), name="login"),
+    path("logout/", views.LogoutView.as_view(), name="logout"),
     # Statuses
     path("statuses/", views.StatusListView.as_view(), name="statuses_list"),
     path("statuses/create/", views.StatusCreateView.as_view(), name="status_create"),
