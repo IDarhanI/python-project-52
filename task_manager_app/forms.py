@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
@@ -28,9 +28,7 @@ class UserCreateForm(UserCreationForm):
         }
 
 
-class UserUpdateForm(UserChangeForm):
-    password = None  # убираем поле смены пароля
-
+class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = (
@@ -134,10 +132,3 @@ class TaskForm(forms.ModelForm):
 
         if self.instance.pk:
             self.fields["labels"].initial = self.instance.labels.all()
-
-    def save(self, commit=True):
-        task = super().save(commit=False)
-        if commit:
-            task.save()
-            self.save_m2m()
-        return task
