@@ -9,27 +9,27 @@ from .models import Task, Status, Label
 class TaskFilter(django_filters.FilterSet):
     status = django_filters.ModelChoiceFilter(
         queryset=Status.objects.all(),
-        label=_("Status"),
-        widget=forms.Select(attrs={"class": "form-control"}),
+        label=_("Статус"),
+        widget=forms.Select(attrs={"class": "form-select"}),
     )
 
     executor = django_filters.ModelChoiceFilter(
         queryset=User.objects.all(),
-        label=_("Executor"),
-        widget=forms.Select(attrs={"class": "form-control"}),
+        label=_("Исполнитель"),
+        widget=forms.Select(attrs={"class": "form-select"}),
     )
 
     label = django_filters.ModelChoiceFilter(
         field_name="labels",
         queryset=Label.objects.all(),
-        label=_("Label"),
-        widget=forms.Select(attrs={"class": "form-control"}),
+        label=_("Метка"),
+        widget=forms.Select(attrs={"class": "form-select"}),
     )
 
     self_tasks = django_filters.BooleanFilter(
         method="filter_self_tasks",
-        label=_("Only my tasks"),
-        widget=forms.CheckboxInput(),
+        label=_("Только свои задачи"),
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
     )
 
     class Meta:
@@ -48,6 +48,7 @@ class TaskFilter(django_filters.FilterSet):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         self.filters["status"].queryset = Status.objects.all().order_by("name")
         self.filters["executor"].queryset = User.objects.all().order_by("username")
         self.filters["label"].queryset = Label.objects.all().order_by("name")

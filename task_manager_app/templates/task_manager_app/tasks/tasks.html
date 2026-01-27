@@ -1,6 +1,5 @@
 {% extends "task_manager_app/base.html" %}
 {% load i18n %}
-{% load django_bootstrap5 %}
 
 {% block title %}
 {% trans "Задачи" %}
@@ -23,10 +22,39 @@
     <div class="card bg-dark border-secondary mb-4">
         <div class="card-body">
             <form method="get">
-                {% bootstrap_form filter.form %}
-                <button type="submit" class="btn btn-outline-light mt-3">
+
+                <div class="mb-3">
+                    <label class="form-label" for="id_status">
+                        {% trans "Статус" %}
+                    </label>
+                    {{ filter.form.status }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="id_executor">
+                        {% trans "Исполнитель" %}
+                    </label>
+                    {{ filter.form.executor }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="id_label">
+                        {% trans "Метка" %}
+                    </label>
+                    {{ filter.form.label }}
+                </div>
+
+                <div class="form-check mb-3">
+                    {{ filter.form.self_tasks }}
+                    <label class="form-check-label" for="id_self_tasks">
+                        {% trans "Только свои задачи" %}
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-outline-light">
                     {% trans "Показать" %}
                 </button>
+
             </form>
         </div>
     </div>
