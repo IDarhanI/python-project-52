@@ -1,5 +1,8 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+)
 from django.contrib.auth.models import User
 from django.contrib.auth.views import (
     LoginView as DjangoLoginView,
@@ -19,7 +22,13 @@ from django.views.generic import (
 from django_filters.views import FilterView
 
 from .filters import TaskFilter
-from .forms import LabelForm, StatusForm, TaskForm, UserCreateForm, UserUpdateForm
+from .forms import (
+    LabelForm,
+    StatusForm,
+    TaskForm,
+    UserCreateForm,
+    UserUpdateForm,
+)
 from .models import Label, Status, Task
 
 # ================= INDEX =================
@@ -59,7 +68,11 @@ class UserCreateView(CreateView):
         return response
 
 
-class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class UserUpdateView(
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+    UpdateView,
+):
     model = User
     form_class = UserUpdateForm
     template_name = "task_manager_app/users/update.html"
@@ -79,7 +92,11 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return redirect("users_list")
 
 
-class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class UserDeleteView(
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+    DeleteView,
+):
     model = User
     template_name = "task_manager_app/users/delete.html"
     success_url = reverse_lazy("users_list")
@@ -171,7 +188,11 @@ class TaskListView(LoginRequiredMixin, FilterView):
     filterset_class = TaskFilter
 
     def get_queryset(self):
-        return Task.objects.select_related("author", "executor", "status")
+        return Task.objects.select_related(
+            "author",
+            "executor",
+            "status",
+        )
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
@@ -208,10 +229,18 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
     login_url = reverse_lazy("login")
 
     def get_queryset(self):
-        return Task.objects.select_related("author", "executor", "status")
+        return Task.objects.select_related(
+            "author",
+            "executor",
+            "status",
+        )
 
 
-class TaskDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class TaskDeleteView(
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+    DeleteView,
+):
     model = Task
     template_name = "task_manager_app/tasks/delete.html"
     success_url = reverse_lazy("tasks_list")

@@ -36,7 +36,10 @@ class UserCRUDTest(TestCase):
         self.assertTrue(User.objects.filter(username="janesmith").exists())
 
     def test_user_update(self):
-        self.client.login(username="testuser", password="testpass123")
+        self.client.login(
+            username="testuser",
+            password="testpass123",
+        )
 
         response = self.client.post(
             reverse("user_update", kwargs={"pk": self.user.id}),
@@ -52,9 +55,14 @@ class UserCRUDTest(TestCase):
         self.assertEqual(self.user.username, "updateduser")
 
     def test_user_delete(self):
-        self.client.login(username="testuser", password="testpass123")
+        self.client.login(
+            username="testuser",
+            password="testpass123",
+        )
 
-        response = self.client.post(reverse("user_delete", kwargs={"pk": self.user.id}))
+        response = self.client.post(
+            reverse("user_delete", kwargs={"pk": self.user.id}),
+        )
         self.assertRedirects(response, reverse("users_list"))
         self.assertFalse(User.objects.filter(id=self.user.id).exists())
 
@@ -77,7 +85,10 @@ class StatusCRUDTest(TestCase):
         cls.status = Status.objects.create(name="In Progress")
 
     def test_status_create(self):
-        self.client.login(username="user", password="pass123")
+        self.client.login(
+            username="user",
+            password="pass123",
+        )
 
         response = self.client.post(
             reverse("status_create"),
@@ -87,7 +98,10 @@ class StatusCRUDTest(TestCase):
         self.assertTrue(Status.objects.filter(name="New").exists())
 
     def test_status_update(self):
-        self.client.login(username="user", password="pass123")
+        self.client.login(
+            username="user",
+            password="pass123",
+        )
 
         response = self.client.post(
             reverse("status_update", kwargs={"pk": self.status.id}),
@@ -99,10 +113,13 @@ class StatusCRUDTest(TestCase):
         self.assertEqual(self.status.name, "Updated")
 
     def test_status_delete(self):
-        self.client.login(username="user", password="pass123")
+        self.client.login(
+            username="user",
+            password="pass123",
+        )
 
         response = self.client.post(
-            reverse("status_delete", kwargs={"pk": self.status.id})
+            reverse("status_delete", kwargs={"pk": self.status.id}),
         )
         self.assertRedirects(response, reverse("statuses_list"))
         self.assertFalse(Status.objects.filter(id=self.status.id).exists())
@@ -119,8 +136,14 @@ class StatusCRUDTest(TestCase):
 class TaskCRUDTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = User.objects.create_user("author", password="pass")
-        cls.executor = User.objects.create_user("executor", password="pass")
+        cls.user = User.objects.create_user(
+            username="author",
+            password="pass",
+        )
+        cls.executor = User.objects.create_user(
+            username="executor",
+            password="pass",
+        )
         cls.status = Status.objects.create(name="New")
 
         cls.task = Task.objects.create(
@@ -132,7 +155,10 @@ class TaskCRUDTest(TestCase):
         )
 
     def test_task_create(self):
-        self.client.login(username="author", password="pass")
+        self.client.login(
+            username="author",
+            password="pass",
+        )
 
         response = self.client.post(
             reverse("task_create"),
@@ -147,7 +173,10 @@ class TaskCRUDTest(TestCase):
         self.assertTrue(Task.objects.filter(name="Created task").exists())
 
     def test_task_update(self):
-        self.client.login(username="author", password="pass")
+        self.client.login(
+            username="author",
+            password="pass",
+        )
 
         response = self.client.post(
             reverse("task_update", kwargs={"pk": self.task.id}),
@@ -164,9 +193,14 @@ class TaskCRUDTest(TestCase):
         self.assertEqual(self.task.name, "Updated task")
 
     def test_task_delete_by_author(self):
-        self.client.login(username="author", password="pass")
+        self.client.login(
+            username="author",
+            password="pass",
+        )
 
-        response = self.client.post(reverse("task_delete", kwargs={"pk": self.task.id}))
+        response = self.client.post(
+            reverse("task_delete", kwargs={"pk": self.task.id}),
+        )
         self.assertRedirects(response, reverse("tasks_list"))
         self.assertFalse(Task.objects.filter(id=self.task.id).exists())
 
@@ -177,11 +211,17 @@ class TaskCRUDTest(TestCase):
 class LabelCRUDTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = User.objects.create_user("user", password="pass")
+        cls.user = User.objects.create_user(
+            username="user",
+            password="pass",
+        )
         cls.label = Label.objects.create(name="Bug")
 
     def test_label_create(self):
-        self.client.login(username="user", password="pass")
+        self.client.login(
+            username="user",
+            password="pass",
+        )
 
         response = self.client.post(
             reverse("label_create"),
@@ -191,7 +231,10 @@ class LabelCRUDTest(TestCase):
         self.assertTrue(Label.objects.filter(name="Feature").exists())
 
     def test_label_update(self):
-        self.client.login(username="user", password="pass")
+        self.client.login(
+            username="user",
+            password="pass",
+        )
 
         response = self.client.post(
             reverse("label_update", kwargs={"pk": self.label.id}),
@@ -203,10 +246,13 @@ class LabelCRUDTest(TestCase):
         self.assertEqual(self.label.name, "Updated")
 
     def test_label_delete(self):
-        self.client.login(username="user", password="pass")
+        self.client.login(
+            username="user",
+            password="pass",
+        )
 
         response = self.client.post(
-            reverse("label_delete", kwargs={"pk": self.label.id})
+            reverse("label_delete", kwargs={"pk": self.label.id}),
         )
         self.assertRedirects(response, reverse("labels_list"))
         self.assertFalse(Label.objects.filter(id=self.label.id).exists())
