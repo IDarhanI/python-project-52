@@ -72,18 +72,16 @@ class LabelForm(forms.ModelForm):
 
 class TaskForm(forms.ModelForm):
     executor = forms.ModelChoiceField(
-        queryset=User.objects.none(),
+        queryset=User.objects.all(),
         required=False,
         label=_("Исполнитель"),
-        empty_label=_("---------"),
-        widget=forms.Select(attrs={"class": "form-control"}),
+        empty_label="---------",
     )
 
     labels = forms.ModelMultipleChoiceField(
-        queryset=Label.objects.none(),
+        queryset=Label.objects.all(),
         required=False,
         label=_("Метки"),
-        widget=forms.SelectMultiple(attrs={"class": "form-control"}),
     )
 
     class Meta:
@@ -94,28 +92,11 @@ class TaskForm(forms.ModelForm):
             "description": _("Описание"),
             "status": _("Статус"),
         }
-        widgets = {
-            "name": forms.TextInput(
-                attrs={
-                    "class": "form-control",
-                    "placeholder": _("Имя задачи"),
-                }
-            ),
-            "description": forms.Textarea(
-                attrs={
-                    "class": "form-control",
-                    "rows": 4,
-                    "placeholder": _("Описание задачи"),
-                }
-            ),
-            "status": forms.Select(attrs={"class": "form-control"}),
-        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.fields["status"].queryset = Status.objects.all().order_by("name")
-        self.fields["executor"].queryset = User.objects.all().order_by("username")
         self.fields["labels"].queryset = Label.objects.all().order_by("name")
 
         if self.instance.pk:
