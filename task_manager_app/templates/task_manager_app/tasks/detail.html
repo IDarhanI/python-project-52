@@ -33,13 +33,13 @@
             <ul class="list-unstyled mb-0">
                 <li>
                     <strong>{% trans "Автор" %}:</strong>
-                    {{ task.author.username }}
+                    {{ task.author.get_full_name }}
                 </li>
 
                 <li>
                     <strong>{% trans "Исполнитель" %}:</strong>
                     {% if task.executor %}
-                        {{ task.executor.first_name }} {{ task.executor.last_name }}
+                        {{ task.executor.get_full_name }}
                     {% else %}
                         —
                     {% endif %}
@@ -47,7 +47,7 @@
 
                 <li>
                     <strong>{% trans "Статус" %}:</strong>
-                    {{ task.status.name }}
+                    {{ task.status }}
                 </li>
 
                 <li>
