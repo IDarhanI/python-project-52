@@ -243,6 +243,15 @@ class LoginView(DjangoLoginView):
     template_name = "registration/login.html"
     redirect_authenticated_user = True
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, _("Вы залогинены"))
+        return response
+
 
 class LogoutView(DjangoLogoutView):
     next_page = reverse_lazy("index")
+
+    def dispatch(self, request, *args, **kwargs):
+        messages.success(request, _("Вы разлогинены"))
+        return super().dispatch(request, *args, **kwargs)
