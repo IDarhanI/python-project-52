@@ -58,7 +58,8 @@
         <!-- 🌍 Language switch -->
         <form action="{% url 'set_language' %}" method="post" class="m-0">
           {% csrf_token %}
-          <input type="hidden" name="next" value="{{ request.path }}">
+          <input type="hidden" name="next" value="{{ request.get_full_path|slice:'3:' }}">
+
           <select name="language"
                   class="form-select form-select-sm bg-dark text-light border-secondary"
                   onchange="this.form.submit()">
