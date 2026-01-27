@@ -1,16 +1,25 @@
-{% extends 'task_manager_app/base.html' %}
+{% extends "task_manager_app/base.html" %}
 {% load i18n %}
 {% load django_bootstrap5 %}
 
+{% block title %}{% trans "Изменение пользователя" %}{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <h1 class="mb-4">{% trans "Edit user" %}</h1>
+<div class="row justify-content-center">
+    <div class="col-md-6">
 
-    <form method="post">
-        {% csrf_token %}
-        {% bootstrap_form form %}
+        <h1 class="fw-bold mb-4">
+            {% trans "Изменение пользователя" %}
+        </h1>
 
-        <button type="submit" class="btn btn-primary">{% trans "Update" %}</button>
-    </form>
+        <form method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <button class="btn btn-light text-dark">
+                {% trans "Сохранить" %}
+            </button>
+        </form>
+
+    </div>
 </div>
 {% endblock %}

@@ -124,7 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # ---------------------------------------------------------------------
 
-LANGUAGE_CODE = "en"
+LANGUAGE_CODE = "ru"
 
 LANGUAGES = [
     ("en", "English"),

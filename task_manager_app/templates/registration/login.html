@@ -1,25 +1,25 @@
-{% extends 'task_manager_app/base.html' %}
+{% extends "task_manager_app/base.html" %}
 {% load i18n %}
 {% load django_bootstrap5 %}
 
+{% block title %}{% trans "Вход" %}{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <h1 class="mb-4">{% trans "Login" %}</h1>
+<div class="row justify-content-center">
+    <div class="col-md-5 col-lg-4">
 
-    <form method="post">
-        {% csrf_token %}
+        <h1 class="h3 fw-bold mb-4">
+            {% trans "Вход" %}
+        </h1>
 
-        <div class="mb-3">
-            <label for="id_username" class="form-label">{% trans "Username" %}</label>
-            <input type="text" name="username" class="form-control" id="id_username" required>
-        </div>
+        <form method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <button class="btn btn-light w-100 text-dark">
+                {% trans "Войти" %}
+            </button>
+        </form>
 
-        <div class="mb-3">
-            <label for="id_password" class="form-label">{% trans "Password" %}</label>
-            <input type="password" name="password" class="form-control" id="id_password" required>
-        </div>
-
-        <button type="submit" class="btn btn-primary">{% trans "Login" %}</button>
-    </form>
+    </div>
 </div>
 {% endblock %}

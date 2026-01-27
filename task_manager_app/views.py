@@ -1,13 +1,13 @@
 from django.contrib import messages
-from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView as DjangoLoginView
+from django.contrib.auth.views import LogoutView as DjangoLogoutView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import ProtectedError
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views import View
 from django.views.generic import (
     ListView,
     CreateView,
@@ -21,6 +21,9 @@ from django.http import HttpResponse
 from .models import Status, Task, Label
 from .forms import UserCreateForm, UserUpdateForm, StatusForm, TaskForm, LabelForm
 from .filters import TaskFilter
+
+
+# ================= INDEX =================
 
 
 def index(request):
@@ -236,30 +239,10 @@ class LabelDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 # ================= AUTH =================
 
 
-class LoginView(View):
+class LoginView(DjangoLoginView):
     template_name = "registration/login.html"
-
-    def get(self, request):
-        return render(request, self.template_name)
-
-    def post(self, request):
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        user = authenticate(request, username=username, password=password)
-
-        if user:
-            login(request, user)
-            messages.success(request, _("You are logged in"))
-            return redirect("index")
-
-        messages.error(request, _("Please enter correct username and password"))
-        return render(request, self.template_name)
+    redirect_authenticated_user = True
 
 
-class LogoutView(LoginRequiredMixin, View):
-    login_url = reverse_lazy("login")
-
-    def post(self, request):
-        logout(request)
-        messages.info(request, _("You are logged out"))
-        return redirect("index")
+class LogoutView(DjangoLogoutView):
+    next_page = reverse_lazy("index")

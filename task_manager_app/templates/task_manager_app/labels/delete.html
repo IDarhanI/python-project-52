@@ -1,18 +1,31 @@
-{% extends 'task_manager_app/base.html' %}
+{% extends "task_manager_app/base.html" %}
 {% load i18n %}
-{% load django_bootstrap5 %}
+
+{% block title %}{% trans "Удаление метки" %}{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="mb-4">{% trans "Delete label" %}</h1>
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
 
-    <p>{% trans "Are you sure you want to delete" %} "{{ label.name }}"?</p>
+        <h1 class="fw-bold text-danger mb-4">
+            {% trans "Удаление метки" %}
+        </h1>
 
-    <form method="post">
-        {% csrf_token %}
+        <p class="lead">
+            {% trans "Вы уверены, что хотите удалить метку" %} "{{ object.name }}"?
+        </p>
 
-        <button type="submit" class="btn btn-danger">{% trans "Yes, delete" %}</button>
-        <a href="{% url 'labels_list' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
-    </form>
+        <form method="post">
+            {% csrf_token %}
+
+            <button class="btn btn-danger">
+                {% trans "Да, удалить" %}
+            </button>
+            <a href="{% url 'labels_list' %}" class="btn btn-outline-light ms-2">
+                {% trans "Отмена" %}
+            </a>
+        </form>
+
+    </div>
 </div>
 {% endblock %}

@@ -1,16 +1,29 @@
-{% extends 'task_manager_app/base.html' %}
+{% extends "task_manager_app/base.html" %}
 {% load i18n %}
 {% load django_bootstrap5 %}
 
+{% block title %}{% trans "Изменение метки" %}{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <h1 class="mb-4">{% trans "Edit label" %}</h1>
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
 
-    <form method="post">
-        {% csrf_token %}
-        {% bootstrap_form form %}
+        <h1 class="fw-bold mb-4">
+            {% trans "Изменение метки" %}
+        </h1>
 
-        <button type="submit" class="btn btn-primary">{% trans "Update" %}</button>
-    </form>
+        <form method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+
+            <button class="btn btn-light text-dark">
+                {% trans "Сохранить" %}
+            </button>
+            <a href="{% url 'labels_list' %}" class="btn btn-outline-light ms-2">
+                {% trans "Отмена" %}
+            </a>
+        </form>
+
+    </div>
 </div>
 {% endblock %}
