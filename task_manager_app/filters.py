@@ -56,7 +56,6 @@ class TaskFilter(django_filters.FilterSet):
         self.filters["executor"].queryset = User.objects.all().order_by("username")
         self.filters["label"].queryset = Label.objects.all().order_by("name")
 
-        # ⭐ ВАЖНО: правильный способ задать отображение исполнителя
         self.form.fields["executor"].label_from_instance = (
             lambda user: user.get_full_name() or user.username
         )
