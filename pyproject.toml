@@ -37,7 +37,7 @@ build-backend = "hatchling.build"
 packages = ["task_manager", "task_manager_app"]
 
 [tool.ruff]
-line-length = 88
+line-length = 80
 target-version = "py310"
 fix = true
 show-fixes = true
