@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView as DjangoLoginView
 from django.contrib.auth.views import LogoutView as DjangoLogoutView
@@ -58,15 +58,21 @@ class UserCreateView(CreateView):
         return response
 
 
-class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class UserUpdateView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserUpdateForm
     template_name = "task_manager_app/users/update.html"
     success_url = reverse_lazy("users_list")
     login_url = reverse_lazy("login")
 
-    def test_func(self):
-        return self.request.user == self.get_object()
+    def dispatch(self, request, *args, **kwargs):
+        if request.user != self.get_object():
+            messages.error(
+                request,
+                "У вас нет прав для изменения другого пользователя",
+            )
+            return redirect("users_list")
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -74,14 +80,20 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return response
 
 
-class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class UserDeleteView(LoginRequiredMixin, DeleteView):
     model = User
     template_name = "task_manager_app/users/delete.html"
     success_url = reverse_lazy("users_list")
     login_url = reverse_lazy("login")
 
-    def test_func(self):
-        return self.request.user == self.get_object()
+    def dispatch(self, request, *args, **kwargs):
+        if request.user != self.get_object():
+            messages.error(
+                request,
+                "У вас нет прав для удаления другого пользователя",
+            )
+            return redirect("users_list")
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         try:
@@ -202,23 +214,22 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
         return Task.objects.select_related("author", "executor", "status")
 
 
-class TaskDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class TaskDeleteView(LoginRequiredMixin, DeleteView):
     model = Task
     template_name = "task_manager_app/tasks/delete.html"
     success_url = reverse_lazy("tasks_list")
     login_url = reverse_lazy("login")
 
-    def test_func(self):
-        return self.request.user == self.get_object().author
+    def dispatch(self, request, *args, **kwargs):
+        if request.user != self.get_object().author:
+            messages.error(self.request, "Только автор задачи может ее удалить")
+            return redirect("tasks_list")
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
         messages.success(request, "Задача успешно удалена")
         return response
-
-    def handle_no_permission(self):
-        messages.error(self.request, "Только автор задачи может ее удалить")
-        return redirect("tasks_list")
 
 
 # ================= LABELS =================
