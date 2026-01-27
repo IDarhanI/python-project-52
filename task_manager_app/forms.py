@@ -118,5 +118,12 @@ class TaskForm(forms.ModelForm):
         self.fields["executor"].queryset = User.objects.all().order_by("username")
         self.fields["labels"].queryset = Label.objects.all().order_by("name")
 
+        # 🔑 ВАЖНО: отображение исполнителя как в демо Hexlet
+        self.fields["executor"].label_from_instance = (
+            lambda user: f"{user.first_name} {user.last_name}".strip()
+            if user.first_name or user.last_name
+            else user.username
+        )
+
         if self.instance.pk:
             self.fields["labels"].initial = self.instance.labels.all()
