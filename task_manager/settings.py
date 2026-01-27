@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 import dj_database_url
+import rollbar
 from dotenv import load_dotenv
 
 # ---------------------------------------------------------------------
@@ -61,6 +62,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Rollbar — ВАЖНО: последним
+    "rollbar.contrib.django.middleware.RollbarNotifierMiddleware",
 ]
 
 # ---------------------------------------------------------------------
@@ -113,11 +116,16 @@ else:
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            "UserAttributeSimilarityValidator"
+        )
     },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"
+    },
 ]
 
 # ---------------------------------------------------------------------
@@ -162,3 +170,16 @@ LOGOUT_REDIRECT_URL = "/"
 # ---------------------------------------------------------------------
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# ---------------------------------------------------------------------
+# Rollbar
+# ---------------------------------------------------------------------
+
+ROLLBAR = {
+    "access_token": os.getenv("ROLLBAR_ACCESS_TOKEN"),
+    "environment": "development" if DEBUG else "production",
+    "root": BASE_DIR,
+}
+
+if ROLLBAR["access_token"]:
+    rollbar.init(**ROLLBAR)

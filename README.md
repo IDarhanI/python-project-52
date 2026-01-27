@@ -1,8 +1,95 @@
 # Task Manager
 
-[![Actions Status](https://github.com/IDarhanI/python-project-52/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/IDarhanI/python-project-52/actions)
-[![CI](https://github.com/IDarhanI/python-project-52/actions/workflows/ci.yml/badge.svg)](https://github.com/IDarhanI/python-project-52/actions/workflows/ci.yml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=IDarhanI_python-project-52&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=IDarhanI_python-project-52)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=IDarhanI_python-project-52&metric=coverage)](https://sonarcloud.io/summary/new_code?id=IDarhanI_python-project-52)
-## Live Demo
-**Production:** https://python-project-52-ouyf.onrender.com)
+[![Actions Status](https://github.com/hexlet-boilerplates/python-project-52/workflows/hexlet-check/badge.svg)](https://github.com/hexlet-boilerplates/python-project-52/actions)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=PROJECT_KEY&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=PROJECT_KEY)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=PROJECT_KEY&metric=coverage)](https://sonarcloud.io/summary/new_code?id=PROJECT_KEY)
+
+Веб-приложение для управления задачами с пользователями, статусами и метками.  
+Учебный проект на Django (Hexlet).
+
+## 🚀 Демо
+
+https://python-project-52-ruo4.onrender.com/
+
+## 🛠️ Технологии
+
+- Python 3
+- Django 5
+- PostgreSQL / SQLite
+- Bootstrap 5
+- Django Filters
+- Rollbar
+- Gunicorn
+- Ruff
+- Pytest
+
+## 📦 Установка и запуск
+
+```bash
+make install
+make migrate
+make dev
+```
+
+Приложение будет доступно по адресу:  
+http://127.0.0.1:8000
+
+
+## 🧪 Тесты и качество кода
+
+```bash
+make test
+make lint
+make format
+```
+
+## 🌍 Локализация
+
+```bash
+make compilemessages
+```
+
+## 🐞 Rollbar
+
+```bash
+make rollbar-check
+```
+
+Тест ошибки:
+1. `make dev`
+2. http://localhost:8000/test-error/
+3. Проверить Rollbar Dashboard
+
+## 📌 Функциональность
+
+### Пользователи
+- Регистрация и аутентификация
+- Редактирование и удаление профиля
+- Пользователь может редактировать только себя
+- Нельзя удалить пользователя, если он связан с задачей
+
+### Статусы
+- Просмотр, создание, обновление и удаление
+- Только для аутентифицированных пользователей
+- Нельзя удалить статус, если он используется в задаче
+
+### Задачи
+- Просмотр, создание, обновление и удаление
+- Удалять задачу может только её автор
+- Фильтрация по статусу, исполнителю и метке
+- Отображение задач текущего пользователя
+
+### Метки
+- Просмотр, создание, обновление и удаление
+- Нельзя удалить метку, если она используется в задаче
+
+## 📋 Проверка проекта
+
+- GitHub Actions: тесты и линтер
+- SonarQube: покрытие тестами
+- Rollbar: сбор ошибок
+- Поддержка PostgreSQL и SQLite
+- Секреты через переменные окружения
+- CBV Django
+- Именованный роутинг
+- Bootstrap без кастомных стилей

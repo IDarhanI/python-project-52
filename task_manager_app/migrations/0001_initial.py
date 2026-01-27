@@ -27,7 +27,9 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "name",
-                    models.CharField(max_length=255, unique=True, verbose_name="Name"),
+                    models.CharField(
+                        max_length=255, unique=True, verbose_name="Name"
+                    ),
                 ),
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("updated_at", models.DateTimeField(auto_now=True)),
@@ -51,7 +53,9 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "name",
-                    models.CharField(max_length=255, unique=True, verbose_name="Name"),
+                    models.CharField(
+                        max_length=255, unique=True, verbose_name="Name"
+                    ),
                 ),
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("updated_at", models.DateTimeField(auto_now=True)),

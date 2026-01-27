@@ -102,25 +102,16 @@ class TaskForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields["status"].queryset = (
-            Status.objects.all()
-            .order_by("name")
+        self.fields["status"].queryset = Status.objects.all().order_by("name")
+        self.fields["executor"].queryset = User.objects.all().order_by(
+            "username"
         )
-        self.fields["executor"].queryset = (
-            User.objects.all()
-            .order_by("username")
-        )
-        self.fields["labels"].queryset = (
-            Label.objects.all()
-            .order_by("name")
-        )
+        self.fields["labels"].queryset = Label.objects.all().order_by("name")
 
-        self.fields["executor"].label_from_instance = (
-            lambda user: (
-                f"{user.first_name} {user.last_name}".strip()
-                if user.first_name or user.last_name
-                else user.username
-            )
+        self.fields["executor"].label_from_instance = lambda user: (
+            f"{user.first_name} {user.last_name}".strip()
+            if user.first_name or user.last_name
+            else user.username
         )
 
         if self.instance.pk:
