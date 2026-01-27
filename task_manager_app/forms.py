@@ -71,6 +71,20 @@ class LabelForm(forms.ModelForm):
 
 
 class TaskForm(forms.ModelForm):
+    executor = forms.ModelChoiceField(
+        queryset=User.objects.all(),
+        required=False,
+        label=_("Исполнитель"),
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+
+    labels = forms.ModelMultipleChoiceField(
+        queryset=Label.objects.all(),
+        required=False,
+        label=_("Метки"),
+        widget=forms.SelectMultiple(attrs={"class": "form-control"}),
+    )
+
     class Meta:
         model = Task
         fields = ["name", "description", "status", "executor", "labels"]
@@ -78,10 +92,30 @@ class TaskForm(forms.ModelForm):
             "name": _("Имя"),
             "description": _("Описание"),
             "status": _("Статус"),
-            "executor": _("Исполнитель"),
-            "labels": _("Метки"),
+        }
+        widgets = {
+            "name": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": _("Имя задачи"),
+                }
+            ),
+            "description": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "rows": 4,
+                    "placeholder": _("Описание задачи"),
+                }
+            ),
+            "status": forms.Select(attrs={"class": "form-control"}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["executor"].required = False
+
+        self.fields["status"].queryset = Status.objects.all().order_by("name")
+        self.fields["executor"].queryset = User.objects.all().order_by("username")
+        self.fields["labels"].queryset = Label.objects.all().order_by("name")
+
+        if self.instance.pk:
+            self.fields["labels"].initial = self.instance.labels.all()
