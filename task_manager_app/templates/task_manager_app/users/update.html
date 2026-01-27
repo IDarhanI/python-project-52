@@ -15,12 +15,31 @@
         <form method="post">
             {% csrf_token %}
 
-            {# Хаки для тестов Hexlet:
-               поля должны существовать в DOM, но без value #}
-            <input type="hidden" id="id_password1">
-            <input type="hidden" id="id_password2">
-
             {% bootstrap_form form %}
+
+            <div class="mb-3">
+                <label for="id_password1" class="form-label">
+                    {% trans "Пароль" %}
+                </label>
+                <input
+                    type="password"
+                    name="password1"
+                    class="form-control"
+                    id="id_password1"
+                >
+            </div>
+
+            <div class="mb-3">
+                <label for="id_password2" class="form-label">
+                    {% trans "Подтверждение пароля" %}
+                </label>
+                <input
+                    type="password"
+                    name="password2"
+                    class="form-control"
+                    id="id_password2"
+                >
+            </div>
 
             <button type="submit" class="btn btn-light text-dark">
                 {% trans "Сохранить" %}
