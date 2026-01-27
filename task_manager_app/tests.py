@@ -1,8 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
-from .models import Status, Task, Label
+
+from .models import Label, Status, Task
 
 User = get_user_model()
 

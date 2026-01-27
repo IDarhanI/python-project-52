@@ -1,25 +1,26 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView as DjangoLoginView
-from django.contrib.auth.views import LogoutView as DjangoLogoutView
+from django.contrib.auth.views import (
+    LoginView as DjangoLoginView,
+    LogoutView as DjangoLogoutView,
+)
 from django.db.models import ProtectedError
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import (
-    ListView,
     CreateView,
-    UpdateView,
     DeleteView,
     DetailView,
+    ListView,
+    UpdateView,
 )
 from django_filters.views import FilterView
-from django.http import HttpResponse
 
-from .models import Status, Task, Label
-from .forms import UserCreateForm, UserUpdateForm, StatusForm, TaskForm, LabelForm
 from .filters import TaskFilter
-
+from .forms import LabelForm, StatusForm, TaskForm, UserCreateForm, UserUpdateForm
+from .models import Label, Status, Task
 
 # ================= INDEX =================
 

@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Status, Task, Label, TaskLabel
+
+from .models import Label, Status, Task, TaskLabel
 
 admin.site.register(Status)
 admin.site.register(Task)
