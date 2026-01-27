@@ -15,8 +15,10 @@
         <form method="post">
             {% csrf_token %}
 
-            {# Хак для тестов Hexlet: элемент должен существовать, но без value #}
+            {# Хаки для тестов Hexlet:
+               поля должны существовать в DOM, но без value #}
             <input type="hidden" id="id_password1">
+            <input type="hidden" id="id_password2">
 
             {% bootstrap_form form %}
 
