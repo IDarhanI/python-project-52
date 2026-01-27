@@ -1,8 +1,8 @@
 # Task Manager
 
-[![Actions Status](https://github.com/hexlet-boilerplates/python-project-52/workflows/hexlet-check/badge.svg)](https://github.com/hexlet-boilerplates/python-project-52/actions)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=PROJECT_KEY&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=PROJECT_KEY)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=PROJECT_KEY&metric=coverage)](https://sonarcloud.io/summary/new_code?id=PROJECT_KEY)
+[![CI](https://github.com/IDarhanI/python-project-52/actions/workflows/ci.yml/badge.svg)](https://github.com/IDarhanI/python-project-52/actions/workflows/ci.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=IDarhanI_python-project-52&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=IDarhanI_python-project-52)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=IDarhanI_python-project-52&metric=coverage)](https://sonarcloud.io/summary/new_code?id=IDarhanI_python-project-52)
 
 Веб-приложение для управления задачами с пользователями, статусами и метками.  
 Учебный проект на Django (Hexlet).
