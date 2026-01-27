@@ -6,28 +6,46 @@ from django.utils.translation import gettext_lazy as _
 from .models import Status, Task, Label
 
 
+# ================= USERS =================
+
+
 class UserCreateForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "username")
+        fields = (
+            "first_name",
+            "last_name",
+            "username",
+            "password1",
+            "password2",
+        )
         labels = {
-            "first_name": _("First name"),
-            "last_name": _("Last name"),
-            "username": _("Username"),
+            "first_name": _("Имя"),
+            "last_name": _("Фамилия"),
+            "username": _("Имя пользователя"),
+            "password1": _("Пароль"),
+            "password2": _("Подтверждение пароля"),
         }
 
 
 class UserUpdateForm(UserChangeForm):
-    password = None  # Убираем поле смены пароля из формы редактирования
+    password = None  # убираем поле смены пароля
 
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "username")
+        fields = (
+            "first_name",
+            "last_name",
+            "username",
+        )
         labels = {
-            "first_name": _("First name"),
-            "last_name": _("Last name"),
-            "username": _("Username"),
+            "first_name": _("Имя"),
+            "last_name": _("Фамилия"),
+            "username": _("Имя пользователя"),
         }
+
+
+# ================= STATUSES =================
 
 
 class StatusForm(forms.ModelForm):
@@ -35,13 +53,19 @@ class StatusForm(forms.ModelForm):
         model = Status
         fields = ["name"]
         labels = {
-            "name": _("Name"),
+            "name": _("Имя"),
         }
         widgets = {
             "name": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": _("Status name")}
+                attrs={
+                    "class": "form-control",
+                    "placeholder": _("Имя статуса"),
+                }
             )
         }
+
+
+# ================= LABELS =================
 
 
 class LabelForm(forms.ModelForm):
@@ -49,13 +73,19 @@ class LabelForm(forms.ModelForm):
         model = Label
         fields = ["name"]
         labels = {
-            "name": _("Name"),
+            "name": _("Имя"),
         }
         widgets = {
             "name": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": _("Label name")}
+                attrs={
+                    "class": "form-control",
+                    "placeholder": _("Имя метки"),
+                }
             )
         }
+
+
+# ================= TASKS =================
 
 
 class TaskForm(forms.ModelForm):
@@ -63,28 +93,31 @@ class TaskForm(forms.ModelForm):
         queryset=Label.objects.all(),
         widget=forms.SelectMultiple(attrs={"class": "form-control"}),
         required=False,
-        label=_("Labels"),
+        label=_("Метки"),
     )
 
     class Meta:
         model = Task
         fields = ["name", "description", "status", "executor", "labels"]
         labels = {
-            "name": _("Name"),
-            "description": _("Description"),
-            "status": _("Status"),
-            "executor": _("Executor"),
-            "labels": _("Labels"),
+            "name": _("Имя"),
+            "description": _("Описание"),
+            "status": _("Статус"),
+            "executor": _("Исполнитель"),
+            "labels": _("Метки"),
         }
         widgets = {
             "name": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": _("Task name")}
+                attrs={
+                    "class": "form-control",
+                    "placeholder": _("Имя задачи"),
+                }
             ),
             "description": forms.Textarea(
                 attrs={
                     "class": "form-control",
                     "rows": 4,
-                    "placeholder": _("Task description"),
+                    "placeholder": _("Описание задачи"),
                 }
             ),
             "status": forms.Select(attrs={"class": "form-control"}),
@@ -93,6 +126,7 @@ class TaskForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         self.fields["status"].queryset = Status.objects.all().order_by("name")
         self.fields["executor"].queryset = User.objects.all().order_by("username")
         self.fields["labels"].queryset = Label.objects.all().order_by("name")
