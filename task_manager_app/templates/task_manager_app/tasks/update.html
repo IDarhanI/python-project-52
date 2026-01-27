@@ -16,8 +16,8 @@
             {% csrf_token %}
             {% bootstrap_form form %}
 
-            <button class="btn btn-light text-dark">
-                {% trans "Сохранить" %}
+            <button type="submit" class="btn btn-light text-dark">
+                {% trans "Изменить" %}
             </button>
             <a href="{% url 'tasks_list' %}" class="btn btn-outline-light ms-2">
                 {% trans "Отмена" %}
