@@ -74,6 +74,7 @@ class TaskForm(forms.ModelForm):
     executor = forms.ModelChoiceField(
         queryset=User.objects.all(),
         required=False,
+        empty_label=_("---------"),
         label=_("Исполнитель"),
         widget=forms.Select(attrs={"class": "form-control"}),
     )
