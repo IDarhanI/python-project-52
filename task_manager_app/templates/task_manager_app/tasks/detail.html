@@ -31,10 +31,29 @@
             <hr class="border-secondary">
 
             <ul class="list-unstyled mb-0">
-                <li><strong>{% trans "Автор" %}:</strong> {{ task.author }}</li>
-                <li><strong>{% trans "Исполнитель" %}:</strong> {{ task.executor|default:"—" }}</li>
-                <li><strong>{% trans "Статус" %}:</strong> {{ task.status }}</li>
-                <li><strong>{% trans "Дата создания" %}:</strong> {{ task.created_at|date:"d.m.Y H:i" }}</li>
+                <li>
+                    <strong>{% trans "Автор" %}:</strong>
+                    {{ task.author.username }}
+                </li>
+
+                <li>
+                    <strong>{% trans "Исполнитель" %}:</strong>
+                    {% if task.executor %}
+                        {{ task.executor.first_name }} {{ task.executor.last_name }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </li>
+
+                <li>
+                    <strong>{% trans "Статус" %}:</strong>
+                    {{ task.status.name }}
+                </li>
+
+                <li>
+                    <strong>{% trans "Дата создания" %}:</strong>
+                    {{ task.created_at|date:"d.m.Y H:i" }}
+                </li>
             </ul>
 
             {% if task.labels.exists %}
