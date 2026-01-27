@@ -25,15 +25,13 @@
                     <td>{{ user.get_full_name }}</td>
                     <td>{{ user.date_joined|date:"d.m.Y H:i" }}</td>
                     <td>
-                        {% if request.user == user %}
-                            <a href="{% url 'user_update' user.id %}" class="link-light">
-                                {% trans "Изменить" %}
-                            </a>
-                            |
-                            <a href="{% url 'user_delete' user.id %}" class="link-danger">
-                                {% trans "Удалить" %}
-                            </a>
-                        {% endif %}
+                        <a href="{% url 'user_update' user.id %}" class="link-light">
+                            {% trans "Изменить" %}
+                        </a>
+                        |
+                        <a href="{% url 'user_delete' user.id %}" class="link-danger">
+                            {% trans "Удалить" %}
+                        </a>
                     </td>
                 </tr>
             {% empty %}
