@@ -58,7 +58,7 @@
         <!-- 🌍 Language switch -->
         <form action="{% url 'set_language' %}" method="post" class="m-0">
           {% csrf_token %}
-          <input type="hidden" name="next" value="{{ request.get_full_path|slice:'3:' }}">
+          <input type="hidden" name="next" value="{{ request.get_full_path }}">
 
           <select name="language"
                   class="form-select form-select-sm bg-dark text-light border-secondary"
@@ -96,7 +96,15 @@
 </nav>
 
 <main class="container my-5">
-  {% bootstrap_messages %}
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-info" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
   {% block content %}{% endblock %}
 </main>
 
