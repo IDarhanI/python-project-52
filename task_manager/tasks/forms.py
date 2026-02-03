@@ -10,14 +10,14 @@ User = get_user_model()
 
 class TaskForm(forms.ModelForm):
     executor = forms.ModelChoiceField(
-        queryset=User.objects.all(),
+        queryset=User.objects.none(),
         required=False,
         label=_("Исполнитель"),
         empty_label=_("---------"),
     )
 
     labels = forms.ModelMultipleChoiceField(
-        queryset=Label.objects.all(),
+        queryset=Label.objects.none(),
         required=False,
         label=_("Метки"),
     )
@@ -30,3 +30,8 @@ class TaskForm(forms.ModelForm):
             "description": _("Описание"),
             "status": _("Статус"),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["executor"].queryset = User.objects.all()
+        self.fields["labels"].queryset = Label.objects.all()
