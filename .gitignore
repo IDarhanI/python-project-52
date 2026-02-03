@@ -2,8 +2,10 @@
 # Python
 # =========================
 __pycache__/
+**/__pycache__/
 *.py[cod]
 *$py.class
+__pypackages__/
 
 # =========================
 # Virtual environments
@@ -19,6 +21,7 @@ env/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+*.sqlite3
 
 # =========================
 # Static & media (generated)
@@ -41,9 +44,11 @@ coverage.xml
 htmlcov/
 
 # =========================
-# Linters / formatters
+# Linters / type checkers
 # =========================
 .ruff_cache/
+.mypy_cache/
+.pyright/
 
 # =========================
 # OS / editors
@@ -56,6 +61,8 @@ htmlcov/
 # UV / tooling
 # =========================
 .uv/
+.cache/
+.python-version
 
 # =========================
 # Env files
@@ -72,6 +79,14 @@ build/
 *.egg-info/
 
 # =========================
+# Node / frontend (на будущее)
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
 # Misc / trash (accidental dirs)
 # =========================
 fix/
@@ -79,3 +94,10 @@ deploy/
 yesterday/
 "step 1"/
 "2 days ago"/
+
+# =========================
+# Temporary / backups
+# =========================
+*.bak
+*.tmp
+*.swp
