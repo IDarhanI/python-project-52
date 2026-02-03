@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_bootstrap5",
     "django_filters",
-    "task_manager_app",
+    "task_manager",
 ]
 
 # ---------------------------------------------------------------------
@@ -81,7 +81,7 @@ WSGI_APPLICATION = "task_manager.wsgi.application"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "task_manager_app" / "templates"],
+        "DIRS": [BASE_DIR / "task_manager" / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

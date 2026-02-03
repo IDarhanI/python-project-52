@@ -1,0 +1,31 @@
+{% extends "task_manager/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Удаление метки" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+
+        <h1 class="fw-bold text-danger mb-4">
+            {% trans "Удаление метки" %}
+        </h1>
+
+        <p class="lead">
+            {% trans "Вы уверены, что хотите удалить метку" %} "{{ object.name }}"?
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <button class="btn btn-danger">
+                {% trans "Да, удалить" %}
+            </button>
+            <a href="{% url 'labels_list' %}" class="btn btn-outline-light ms-2">
+                {% trans "Отмена" %}
+            </a>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

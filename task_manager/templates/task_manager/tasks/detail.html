@@ -1,0 +1,73 @@
+{% extends "task_manager/base.html" %}
+{% load i18n %}
+
+{% block title %}
+{{ task.name }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <div class="card bg-dark border-secondary">
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <h1 class="h4 mb-0">{{ task.name }}</h1>
+
+                <div>
+                    <a href="{% url 'task_update' task.id %}" class="btn btn-sm btn-outline-info">
+                        {% trans "Изменить" %}
+                    </a>
+                    <a href="{% url 'task_delete' task.id %}" class="btn btn-sm btn-outline-danger">
+                        {% trans "Удалить" %}
+                    </a>
+                </div>
+            </div>
+
+            <p class="text-secondary">
+                {{ task.description|default:"—" }}
+            </p>
+
+            <hr class="border-secondary">
+
+            <ul class="list-unstyled mb-0">
+                <li>
+                    <strong>{% trans "Автор" %}:</strong>
+                    {{ task.author.get_full_name }}
+                </li>
+
+                <li>
+                    <strong>{% trans "Исполнитель" %}:</strong>
+                    {% if task.executor %}
+                        {{ task.executor.get_full_name }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </li>
+
+                <li>
+                    <strong>{% trans "Статус" %}:</strong>
+                    {{ task.status }}
+                </li>
+
+                <li>
+                    <strong>{% trans "Дата создания" %}:</strong>
+                    {{ task.created_at|date:"d.m.Y H:i" }}
+                </li>
+            </ul>
+
+            {% if task.labels.exists %}
+            <hr class="border-secondary">
+            <div>
+                <strong>{% trans "Метки" %}:</strong>
+                {% for label in task.labels.all %}
+                    <span class="badge bg-secondary me-1">{{ label.name }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

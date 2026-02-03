@@ -47,8 +47,5 @@ exclude = [
 # ======================================
 
 [lint.isort]
-known-first-party = [
-    "task_manager",
-    "task_manager_app",
-]
+known-first-party = ["task_manager"]
 combine-as-imports = true
