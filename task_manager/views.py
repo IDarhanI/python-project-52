@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from task_manager.labels.forms import LabelForm
-from task_manager.models import Label
+from task_manager.labels.models import Label
 
 
 def index(request):

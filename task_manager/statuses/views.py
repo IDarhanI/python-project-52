@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
-from task_manager.models import Status
+from task_manager.statuses.models import Status
 
 from .forms import StatusForm
 
